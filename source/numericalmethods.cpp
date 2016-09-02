@@ -166,3 +166,21 @@ NumericalMatrix<T> NumericalMethods<T>::inverse(NumericalMatrix<T> m_mat){
 
 
 }
+template <class T>
+NumericalMatrix<T> NumericalMethods<T>::transpose(NumericalMatrix<T> m_mat)
+{
+    int size = m_mat.dimension();
+    NumericalMatrix<T> tmp=m_mat;
+
+    for(int i=0;i<size;i++){
+        for (int j=0;j<size;j++){
+        tmp.setValue(i,j,m_mat[j][i]);
+        }
+    }
+
+//    std::cout << "orig" << std::endl;
+//    m_mat.printMatrix();
+//    std::cout << "trans" << std::endl;
+//    tmp.printMatrix();
+ return m_mat;
+}

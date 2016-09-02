@@ -23,6 +23,8 @@ int main()
         std::cout << "A: " << std::endl;
         mat.printMatrix();
 
+        NumericalMethods<double>::transpose(mat);
+
         std::cout << "det: " << NumericalMethods<double>::determinant(mat.dimension(),mat) << std::endl;
 
         std::cout << "inv: "<< std::endl;

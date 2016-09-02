@@ -16,6 +16,7 @@ public:
 
     static double determinant(int n, NumericalMatrix<T> mat);
     static NumericalMatrix<T> inverse(NumericalMatrix<T> m_mat);
+    static NumericalMatrix<T> transpose(NumericalMatrix<T> m_mat);
 
 
 private:
