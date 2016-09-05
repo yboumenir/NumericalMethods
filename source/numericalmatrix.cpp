@@ -37,6 +37,8 @@ NumericalMatrix<T>::~NumericalMatrix()
 {
 
 }
+
+
 template <class T>
 void NumericalMatrix<T>::pushColumns(int row, std::initializer_list<T> vec)
 {

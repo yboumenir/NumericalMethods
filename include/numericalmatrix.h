@@ -27,7 +27,7 @@ public:
   bool empty() const{       // return true if empty.
       return m_matrix.empty();
   }
-  std::vector<std::vector<T> > matrix() const;
+  std::vector<std::vector<T>> matrix() const;
 
   class Proxy {
   public:

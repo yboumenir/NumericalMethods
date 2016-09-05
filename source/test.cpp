@@ -16,6 +16,16 @@ struct Functions{
     NumericalMatrix<double> iJJ;
     // The guess vector
     NumericalMatrix<double> X;
+    void initializeFunctions(NumericalMatrix<double> & X,
+                             NumericalMatrix<double>& JJ,
+                             NumericalMatrix<double> & F,
+                             NumericalMatrix<double> & iJJ){
+        X.createVector({2,1});
+        JJ.createMatrix(2,2);
+        F.createVector({0,0});
+        iJJ.createMatrix(2,2);
+    }
+
     // error
     double eps = .000001;
 
@@ -26,7 +36,9 @@ struct Functions{
         JJ.setValue(1,0,2*X.getElement(1));
         JJ.setValue(1,1,2*X.getElement(0));
     }
-
+    // the sys of non eqs.
+    //f1 = (x1)^2 +(x2)^2 - 50 =0
+    //f2 = (x1)*(x2) -25=0
     void computeFunction(NumericalMatrix<double> & F){
         this->F.setValue(0,pow(this->X.getElement(0), 2) + pow(this->X.getElement(1), 2) - 50);
         this->F.setValue(1,this->X.getElement(0) * this->X.getElement(1) - 25);
@@ -44,7 +56,6 @@ struct Functions{
         if ((abs(pow(X.getElement(0), 2) + pow(X.getElement(1), 2) - 50) < eps) && abs(X.getElement(0) * X.getElement(1) - 25)<eps)
         {
             printf("Solution converged at N = %3.3i to X[0] = %3.3f and X[1] = %3.3f\r\n",i, X.getElement(0), X.getElement(1));
-//                return X;
             return 1;
         }
     }
@@ -52,66 +63,16 @@ struct Functions{
 
 } funcs;
 
-struct Equations{
-    // need to define the set of functions
-    NumericalMatrix<double> F;
-    // next need to define the jacobians of F
-    NumericalMatrix<double> JJ;
-    // internal TODO: needs to be internal of solver
-    NumericalMatrix<double> iJJ;
-    // The guess vector
-    NumericalMatrix<double> X;
-    // error
-    double eps = .000001;
-
-    void initializeJacobian(NumericalMatrix<double> & JJ){
-        // jacobian with initial guess
-        JJ.setValue(0,0,2*X.getElement(0));
-        JJ.setValue(0,1,2*X.getElement(1));
-        JJ.setValue(1,0,2*X.getElement(1));
-        JJ.setValue(1,1,2*X.getElement(0));
-    }
-
-    void computeFunction(NumericalMatrix<double> & F){
-        F.setValue(0,pow(this->X.getElement(0), 2) + pow(this->X.getElement(1), 2) - 50);
-        F.setValue(1,this->X.getElement(0) * this->X.getElement(1) - 25);
-    }
-
-    void computeInverseJacobian(NumericalMatrix<double> JJ, NumericalMatrix<double> & iJJ){
-        iJJ = NumericalMethods<double>::inverse(JJ);
-
-    }
-
-    bool computeNewGuess(NumericalMatrix<double> &X, int i){
-        X.setValue(0,X.getElement(0) - (this->iJJ[0][0] * this->F.getElement(0) + this->iJJ[0][1] * this->F.getElement(1)));
-        X.setValue(1,X.getElement(1) - (this->iJJ[1][0] * this->F.getElement(1) + this->iJJ[1][1] * this->F.getElement(1)));
-
-        if ((abs(pow(X.getElement(0), 2) + pow(X.getElement(1), 2) - 50) < eps) && abs(X.getElement(0) * X.getElement(1) - 25)<eps)
-        {
-            printf("Solution converged at N = %3.3i to X[0] = %3.3f and X[1] = %3.3f\r\n",i, X.getElement(0), X.getElement(1));
-//                return X;
-            return 1;
-        }
-    }
-} Equations;
-
-
 #include <functional>
 #include <memory>
 int main()
 {
     try {
-        NumericalMatrix<int>       intStack;  // stack of ints
         NumericalMatrix<double>  mat;
         int row = 3;
         int col = 3;
 
         mat.createMatrix(row,col);
-//        for(int i =0 ; i < row; i++ ){
-//            for(int j=0; j <col; j++){
-//                mat.setValue(j,i,rand()/1000000);
-//            }
-//        }
 
         mat.pushColumns(0,{7,2,1});
         mat.pushColumns(1,{0,3,-1});

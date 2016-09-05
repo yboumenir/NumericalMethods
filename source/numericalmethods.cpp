@@ -4,6 +4,11 @@ NumericalMethods<T>::NumericalMethods()
 {
 
 }
+template <class T>
+NumericalMethods<T>::~NumericalMethods()
+{
+
+}
 
 template <class T>
 double NumericalMethods<T>::determinant(int n, NumericalMatrix<T>mat)
@@ -145,14 +150,14 @@ NumericalMatrix<T> NumericalMethods<T>::inverse(NumericalMatrix<T> m_mat){
 }
 
 template <class T>
-NumericalMatrix<T> NumericalMethods<T>::transpose(NumericalMatrix<T> m_mat)
+NumericalMatrix<T> NumericalMethods<T>::transpose(NumericalMatrix<T> mat)
 {
-    int size = m_mat.dimension();
-    NumericalMatrix<T> tmp=m_mat;
+    int size = mat.dimension();
+    NumericalMatrix<T> tmp=mat;
 
     for(int i=0;i<size;i++){
         for (int j=0;j<size;j++){
-        tmp.setValue(i,j,m_mat[j][i]);
+        tmp.setValue(i,j,mat[j][i]);
         }
     }
 
@@ -160,7 +165,7 @@ NumericalMatrix<T> NumericalMethods<T>::transpose(NumericalMatrix<T> m_mat)
 //    m_mat.printMatrix();
 //    std::cout << "trans" << std::endl;
 //    tmp.printMatrix();
-    return m_mat;
+    return mat;
 }
 /*
 template <class T>
