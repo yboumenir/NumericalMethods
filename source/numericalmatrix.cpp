@@ -10,11 +10,32 @@ void NumericalMatrix<T>::setValue(int row, int col, T value)
     m_matrix[row][col] = value;
 
 }
+template <class T>
+void NumericalMatrix<T>::setValue(int row, T value)
+{
+    m_vector[row] = value;
+}
+template <class T>
+T NumericalMatrix<T>::getElement(int row)
+{
+    return m_vector[row];
+}
 
 template <class T>
 double NumericalMatrix<T>::dimension()
 {
     return matrix().size();
+}
+template <class T>
+NumericalMatrix<T>::NumericalMatrix()
+{
+    m_matrix;
+    m_vector;
+}
+template <class T>
+NumericalMatrix<T>::~NumericalMatrix()
+{
+
 }
 template <class T>
 void NumericalMatrix<T>::pushColumns(int row, std::initializer_list<T> vec)

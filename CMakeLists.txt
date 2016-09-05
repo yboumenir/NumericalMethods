@@ -2,13 +2,10 @@
 
 add_compile_options(-std=c++1y )
 
-set(SRC
-        source/numericalmethods.cpp
+set(SRC source/numericalmethods.cpp
         source/numericalmatrix.cpp)
 
-set(HDS
-
-        include/numericalmethods.h
+set(HDS include/numericalmethods.h
         include/numericalmatrix.h)
 
     set(target test)

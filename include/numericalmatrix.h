@@ -14,6 +14,8 @@ private:
   std::vector<T>         m_vector;
 
 public:
+  NumericalMatrix();
+  ~NumericalMatrix();
   void pushColumns(int row,std::initializer_list<T>);
   void createMatrix(int rows,int cols);
   void createVector(std::initializer_list<T>);
@@ -42,7 +44,10 @@ public:
       return Proxy(m_matrix[row]);
   }
 
+
   void setValue(int row, int col, T value);
+  void setValue(int row, T value);
+  T    getElement(int row);
   double dimension();
 
 };
