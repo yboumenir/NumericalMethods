@@ -1,5 +1,4 @@
-﻿#include <iostream>
-#include "../include/numericalmatrix.h"
+﻿#include "../include/numericalmatrix.h"
 #include "../include/numericalmethods.h"
 
 struct Functions{

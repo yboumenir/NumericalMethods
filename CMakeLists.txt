@@ -1,12 +1,15 @@
-﻿project(numericalmethods)
+project(numericalmethods)
+#set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++ -lc++abi")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++ ")
 
-add_compile_options(-std=c++1y )
+#add_compile_options(" -std=c++11 -stdlib=libstdc++")
 
-set(SRC source/numericalmethods.cpp
-        source/numericalmatrix.cpp)
+set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/source/numericalmethods.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/source/numericalmatrix.cpp)
 
-set(HDS include/numericalmethods.h
-        include/numericalmatrix.h)
+set(HDS ${CMAKE_CURRENT_SOURCE_DIR}/include/numericalmethods.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/numericalmatrix.h)
 
     set(target test)
 
