@@ -137,9 +137,9 @@ public:
 
 
 // template grbg
-template class NumericalMatrix<int>;
-template class NumericalMatrix<double>;
-template class NumericalMatrix<float>;
+//template class NumericalMatrix<int>;
+//template class NumericalMatrix<double>;
+//template class NumericalMatrix<float>;
 //template class NumericalMatrix<std::string>;
 
 

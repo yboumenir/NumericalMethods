@@ -1,7 +1,120 @@
-﻿#include "../include/numericalmatrix.h"
+﻿#include <QApplication>
+#include "../include/numericalmatrix.h"
 #include "../include/numericalmethods.h"
 
+
+
+#include "qwt_plot.h"
+#include "qwt_plot_curve.h"
+#include "qwt_plot_grid.h"
+#include "qwt_symbol.h"
+#include "qwt_legend.h"
+#include <iostream>
+
+struct plotStruct{
+
+
+public:
+
+    plotStruct(QString plotName = "Convergance Plot"){
+
+        plot = new QwtPlot();
+        grid = new QwtPlotGrid();
+        curve = new QwtPlotCurve();
+        symbol = new QwtSymbol(QwtSymbol::Ellipse, QBrush( Qt::green ), QPen( Qt::green, 1 ), QSize( 4, 4 ));
+        points = new QPolygonF();
+
+
+        plot->setTitle( plotName );
+        plot->setCanvasBackground( Qt::white );
+        plot->setAxisScale( QwtPlot::yLeft, 0.0, 10.0 );
+        plot->insertLegend( new QwtLegend() );
+
+
+        grid->attach( plot );
+
+        curve->setTitle( "Solutions" );
+
+
+        plot->resize( 600, 400 );
+
+
+
+    }
+
+
+    void addPoints(QPolygonF points, QString plotTitle = "plot_"){
+        static int curve_id;
+
+
+        QwtPlotCurve *curve = new QwtPlotCurve;
+
+
+        if(!plotTitle.compare("plot_",Qt::CaseInsensitive))
+        {
+            curve_id++;
+            std::string tmp ("plot_");
+            tmp += std::to_string(curve_id);
+            curve->setTitle(QString::fromStdString(tmp));
+        }
+        else
+        {
+            curve->setTitle(plotTitle);
+        }
+
+        int penid = Qt::color0 + curve_id;
+
+        std::cout <<penid;
+
+        curve->setPen( penid, 2 ), curve->setRenderHint( QwtPlotItem::RenderAntialiased, true );
+
+        curve->setSymbol( symbol );
+
+        curve->setSamples( points );
+        curve->attach( plot );
+
+    }
+
+    void show(){
+        plot->show();
+    }
+
+
+
+private:
+    QwtPlot *plot;
+    QwtPlotGrid *grid;
+    QwtPlotCurve *curve;
+    QwtSymbol *symbol;
+    QPolygonF *points;
+
+
+};
+
+
+int xmain( int argc, char **argv )
+{
+
+
+    plotStruct plt;
+
+
+
+    QPolygonF point;
+    for(double i=0.0;i<6.28;i = i + 0.0628 ){
+        point<<QPointF(i,std::sin(i)+1);
+
+    }
+    plt.addPoints(point);
+
+
+    plt.show();
+
+}
+
 struct Functions{
+
+    plotStruct plt;
 
     static double foo(double x){
         return pow(cos(x),2)+sin(x);
@@ -52,20 +165,35 @@ struct Functions{
         X.setValue(0,X.getElement(0) - (this->iJJ[0][0] * this->F.getElement(0) + this->iJJ[0][1] * this->F.getElement(1)));
         X.setValue(1,X.getElement(1) - (this->iJJ[1][0] * this->F.getElement(1) + this->iJJ[1][1] * this->F.getElement(1)));
 
+        static QPolygonF point1, point2;
+
+        point1 << QPointF(i,X.getElement(0));
+        point2 << QPointF(i,X.getElement(1));
+        std::cout << "x(1) = " << X.getElement(0) << ", x(2) = " << X.getElement(1) << std::endl;
         if ((abs(pow(X.getElement(0), 2) + pow(X.getElement(1), 2) - 50) < eps) && abs(X.getElement(0) * X.getElement(1) - 25)<eps)
         {
             printf("Solution converged at N = %3.3i to X[0] = %3.3f and X[1] = %3.3f\r\n",i, X.getElement(0), X.getElement(1));
+            plt.addPoints(point1);
+            plt.addPoints(point2);
+            plt.show();
             return 1;
         }
+
     }
 
 
-} funcs;
+
+
+};
 
 #include <functional>
 #include <memory>
-int main()
+
+int main(int argc, char **argv)
 {
+    QApplication a(argc,argv);
+    Functions funcs;
+
     try {
         NumericalMatrix<double>  mat;
         int row = 3;
@@ -107,5 +235,7 @@ int main()
         std::cerr << "Exception: " << ex.what() <<std::endl;
         return -1;
     }
+
+    return a.exec();
 }
 
